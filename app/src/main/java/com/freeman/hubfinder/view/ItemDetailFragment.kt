@@ -1,12 +1,11 @@
-package com.freeman.hubfinder
+package com.freeman.hubfinder.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.freeman.hubfinder.R
 
 /**
  * A fragment representing a single Item detail screen.

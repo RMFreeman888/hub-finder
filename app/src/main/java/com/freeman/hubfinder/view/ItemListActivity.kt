@@ -1,15 +1,10 @@
-package com.freeman.hubfinder
+package com.freeman.hubfinder.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import com.freeman.hubfinder.R
 
 /**
  * An activity representing a list of Pings. This activity

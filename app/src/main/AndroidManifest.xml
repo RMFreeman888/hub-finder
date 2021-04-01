@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HubFinder">
         <activity
-            android:name=".ItemListActivity"
+            android:name=".view.ItemListActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.HubFinder.NoActionBar">
             <intent-filter>
@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ItemDetailActivity"
+            android:name=".view.ItemDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".ItemListActivity"
+            android:parentActivityName=".view.ItemListActivity"
             android:theme="@style/Theme.HubFinder.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.freeman.hubfinder.ItemListActivity" />
+                android:value="com.freeman.hubfinder.view.ItemListActivity" />
         </activity>
     </application>
 
