@@ -1,10 +1,17 @@
 package com.freeman.hubfinder.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.freeman.hubfinder.R
+import com.freeman.hubfinder.databinding.ActivityItemListBinding
+import com.freeman.hubfinder.databinding.RepoListBinding
+import com.freeman.hubfinder.view.adapter.RepoListAdapter
+import com.freeman.hubfinder.viewmodel.RepoListViewModel
 
 /**
  * An activity representing a list of Pings. This activity
@@ -16,6 +23,12 @@ import com.freeman.hubfinder.R
  */
 class ItemListActivity : AppCompatActivity() {
 
+    lateinit var viewModel: RepoListViewModel
+    lateinit var activityBinding: ActivityItemListBinding
+    lateinit var repoListBinding: RepoListBinding
+
+    private val repoListAdapter = RepoListAdapter(arrayListOf())
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -24,14 +37,62 @@ class ItemListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_list)
+        activityBinding = ActivityItemListBinding.inflate(layoutInflater)
+        setContentView(activityBinding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.title = title
+        repoListBinding = activityBinding.itemList.repoListLayout
+        repoListBinding.repoList.layoutManager = LinearLayoutManager(this@ItemListActivity)
+        repoListBinding.repoList.adapter = repoListAdapter
 
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
             twoPane = true
         }
+
+        val toolbar = activityBinding.toolbar
+        setSupportActionBar(toolbar)
+        toolbar.title = title
+
+        viewModel = ViewModelProvider(this).get(RepoListViewModel::class.java)
+        viewModel.refresh()
+
+        repoListBinding.itemList.setOnRefreshListener {
+            repoListBinding.itemList.isRefreshing = false
+            viewModel.refresh()
+        }
+
+        observeViewModel()
+    }
+
+    fun observeViewModel() {
+        viewModel.repoList.observe(this, Observer { repos ->
+            repos?.let{
+                repoListBinding.repoList.visibility = View.VISIBLE
+                repoListAdapter.updateRepoList(it)
+            }
+        })
+
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+            isLoading?.let {
+                if(it) {
+                    repoListBinding.loadingView.visibility = View.VISIBLE
+                    repoListBinding.listError.visibility = View.GONE
+                    repoListBinding.repoList.visibility = View.GONE
+                } else {
+                    repoListBinding.loadingView.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.repoListLoadError.observe(this, Observer { isLoadError ->
+            isLoadError?.let {
+                if(it) {
+                    repoListBinding.loadingView.visibility = View.GONE
+                    repoListBinding.repoList.visibility = View.GONE
+                    repoListBinding.listError.visibility = View.VISIBLE
+                } else {
+                    repoListBinding.listError.visibility = View.GONE
+                }
+            }
+        })
     }
 }
