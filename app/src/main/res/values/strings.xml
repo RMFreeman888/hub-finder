@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Hub Finder</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="loading_error_text">An error occured whilst loading data. Swipe to refresh</string>
 </resources>
