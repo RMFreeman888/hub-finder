@@ -6,15 +6,18 @@ import androidx.lifecycle.ViewModel
 import com.freeman.hubfinder.model.GithubRepo
 import com.freeman.hubfinder.model.RemoteRepository
 import com.freeman.hubfinder.model.SearchResults
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import javax.inject.Inject
 
+@HiltViewModel
+class RepoListViewModel @Inject constructor(
+    private val remoteRepository: RemoteRepository,
+    private val disposable: CompositeDisposable
+): ViewModel() {
 
-class RepoListViewModel: ViewModel() {
-
-    private val remoteRepository = RemoteRepository()
-    private val disposable = CompositeDisposable()
     private var lastSearched: String? = null
 
     val repoList = MutableLiveData<List<GithubRepo>>()

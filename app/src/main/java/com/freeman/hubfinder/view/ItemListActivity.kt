@@ -13,6 +13,7 @@ import com.freeman.hubfinder.databinding.ActivityItemListBinding
 import com.freeman.hubfinder.databinding.RepoListBinding
 import com.freeman.hubfinder.view.adapter.RepoListAdapter
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * An activity representing a list of Pings. This activity
@@ -22,6 +23,7 @@ import com.freeman.hubfinder.viewmodel.RepoListViewModel
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
+@AndroidEntryPoint
 class ItemListActivity : AppCompatActivity() {
 
     lateinit var viewModel: RepoListViewModel
