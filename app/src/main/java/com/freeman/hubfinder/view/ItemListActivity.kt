@@ -53,25 +53,11 @@ class ItemListActivity : AppCompatActivity() {
             android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
-                viewModel.fetchRepos(qString)
                 return true
             }
             override fun onQueryTextSubmit(qString: String): Boolean {
-                //placeSearch.hideKeyboard()
-                //showProgress()
-                //var success = true
-                //val placeResult = Validator.Search.place(qString.trim())
+                viewModel.fetchRepos(qString)
 
-                //if (!placeResult.success){
-                //    context?.onError(getString(placeResult.message, placeResult.arg))
-                //    success = false
-                //}
-                //if (!success) {
-                //    hideProgress()
-                //    return@setOnQueryTextListner
-                //}
-
-                //loadLocations(false, qString)
                 return true
             }
         })
