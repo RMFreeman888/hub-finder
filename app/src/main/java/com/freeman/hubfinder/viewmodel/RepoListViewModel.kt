@@ -1,6 +1,5 @@
 package com.freeman.hubfinder.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freeman.hubfinder.model.GithubRepo
@@ -46,7 +45,6 @@ class RepoListViewModel @Inject constructor(
                             }
 
                             override fun onError(e: Throwable?) {
-                                Log.e("TESTDEBUG", e.toString())
                                 isLoading.value = false
                                 repoListLoadError.value = true
                             }
