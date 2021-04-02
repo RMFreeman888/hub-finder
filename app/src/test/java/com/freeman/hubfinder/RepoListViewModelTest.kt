@@ -17,6 +17,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -78,6 +79,7 @@ class RepoListViewModelTest {
 
         Assert.assertEquals(false, repoListViewModel.isLoading.value)
     }
+
 
     @Test
     fun fetchRepos_onSuccess_should_set_error_false() {

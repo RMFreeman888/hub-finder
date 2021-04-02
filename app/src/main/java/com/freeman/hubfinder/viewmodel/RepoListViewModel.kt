@@ -1,5 +1,6 @@
 package com.freeman.hubfinder.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freeman.hubfinder.model.GithubRepo
