@@ -40,6 +40,7 @@ android {
 def retrofitVersion = '2.9.0'
 def rxjavaVersion = '3.0.11'
 def rxandroidVersion = '3.0.0'
+def glideVersion = '4.12.0'
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -60,6 +61,9 @@ dependencies {
 
     implementation "io.reactivex.rxjava3:rxjava:$rxjavaVersion"
     implementation "io.reactivex.rxjava3:rxandroid:$rxandroidVersion"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
