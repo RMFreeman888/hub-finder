@@ -57,7 +57,7 @@ class ItemListActivity : AppCompatActivity() {
             }
             override fun onQueryTextSubmit(qString: String): Boolean {
                 viewModel.fetchRepos(qString)
-
+                activityBinding.searchView.clearFocus()
                 return true
             }
         })
@@ -75,7 +75,7 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         observeViewModel()
-        viewModel.fetchRepos("tetris")
+        viewModel.refresh()
     }
 
     fun observeViewModel() {

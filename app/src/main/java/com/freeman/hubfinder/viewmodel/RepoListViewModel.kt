@@ -15,16 +15,22 @@ class RepoListViewModel: ViewModel() {
 
     private val remoteRepository = RemoteRepository()
     private val disposable = CompositeDisposable()
+    private var lastSearched: String? = null
 
     val repoList = MutableLiveData<List<GithubRepo>>()
     val isLoading = MutableLiveData<Boolean>()
     val repoListLoadError = MutableLiveData<Boolean>()
 
     fun refresh() {
-        fetchRepos("tetris")
+        if (lastSearched == null) {
+            fetchRepos("android")
+        } else {
+            fetchRepos(lastSearched!!)
+        }
     }
 
     fun fetchRepos(search: String) {
+        lastSearched = search
         isLoading.value = true
         disposable.add(
                 remoteRepository.searchRepositories(search)
