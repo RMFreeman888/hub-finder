@@ -39,7 +39,6 @@ class RepoListAdapter(var githubRepos: ArrayList<GithubRepo>):
         private val avatarImageView: ImageView = view.findViewById(R.id.avatar)
         fun bind(githubRepo: GithubRepo) {
             repoNameTextView.text = githubRepo.repoName
-            Log.i("TESTDEBUG", githubRepo.owner?.avatarUrl)
             avatarImageView.loadImage(githubRepo.owner?.avatarUrl)
         }
     }
