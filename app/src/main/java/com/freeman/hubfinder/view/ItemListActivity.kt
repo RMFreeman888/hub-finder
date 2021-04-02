@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,12 +49,39 @@ class ItemListActivity : AppCompatActivity() {
             twoPane = true
         }
 
+        activityBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(qString: String): Boolean {
+                viewModel.fetchRepos(qString)
+                return true
+            }
+            override fun onQueryTextSubmit(qString: String): Boolean {
+                //placeSearch.hideKeyboard()
+                //showProgress()
+                //var success = true
+                //val placeResult = Validator.Search.place(qString.trim())
+
+                //if (!placeResult.success){
+                //    context?.onError(getString(placeResult.message, placeResult.arg))
+                //    success = false
+                //}
+                //if (!success) {
+                //    hideProgress()
+                //    return@setOnQueryTextListner
+                //}
+
+                //loadLocations(false, qString)
+                return true
+            }
+        })
+
+
         val toolbar = activityBinding.toolbar
         setSupportActionBar(toolbar)
         toolbar.title = title
 
         viewModel = ViewModelProvider(this).get(RepoListViewModel::class.java)
-        viewModel.refresh()
 
         repoListBinding.itemList.setOnRefreshListener {
             repoListBinding.itemList.isRefreshing = false
@@ -61,6 +89,7 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         observeViewModel()
+        viewModel.fetchRepos("tetris")
     }
 
     fun observeViewModel() {

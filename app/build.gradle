@@ -38,6 +38,8 @@ android {
     }
 }
 def retrofitVersion = '2.9.0'
+def rxjavaVersion = '3.0.11'
+def rxandroidVersion = '3.0.0'
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -51,9 +53,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
+
+    implementation "io.reactivex.rxjava3:rxjava:$rxjavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxandroidVersion"
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
