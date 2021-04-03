@@ -2,4 +2,7 @@
     <string name="app_name">Hub Finder</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="loading_error_text">An error occured whilst loading data. Swipe to refresh</string>
+    <string name="fork_icon">fork icon</string>
+    <string name="code_icon">Code icon</string>
+    <string name="watching_icon">Watching Icon</string>
 </resources>

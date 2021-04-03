@@ -27,7 +27,7 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class ItemListActivity : AppCompatActivity() {
-
+    @Inject
     lateinit var viewModel: RepoListViewModel
     lateinit var activityBinding: ActivityItemListBinding
     lateinit var repoListBinding: RepoListBinding
@@ -53,6 +53,8 @@ class ItemListActivity : AppCompatActivity() {
         if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
             twoPane = true
         }
+
+        repoListAdapter.setOnClickListeners(this, twoPane)
 
         activityBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {

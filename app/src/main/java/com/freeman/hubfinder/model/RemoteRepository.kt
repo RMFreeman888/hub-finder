@@ -8,7 +8,11 @@ class RemoteRepository @Inject constructor(
 ) {
     private val perPage = "100"
 
-    fun searchRepositories(search: String): Single<SearchResults> {
+    fun searchRepositories(search: String): Single<RepoSearchResponse> {
         return githubApi.searchRepositories(search, perPage)
+    }
+
+    fun getRepoContent(owner: String, name: String): Single<List<Content>> {
+        return githubApi.getRepoContent(owner, name)
     }
 }

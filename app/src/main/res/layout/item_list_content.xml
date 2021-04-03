@@ -9,7 +9,7 @@
         android:layout_width="@dimen/item_list_content_height"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:padding="8dp"/>
+        android:padding="@dimen/image_padding"/>
 
     <TextView
         android:id="@+id/repo_name"

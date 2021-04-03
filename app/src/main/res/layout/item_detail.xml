@@ -1,10 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_detail"
-    style="?android:attr/textAppearanceLarge"
+    android:name="com.freeman.hubfinder.ItemDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".view.ItemDetailFragment" />
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".view.ItemDetailFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/repo_details_grid"
+                android:columnCount="4"
+                android:rowCount="3"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="0"
+                    android:layout_column="0"
+                    android:contentDescription="@string/fork_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_user" />
+
+                <TextView
+                    android:id="@+id/text_user"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="0"
+                    android:layout_column="1"
+                    android:padding="16dp" />
+
+                <ImageView
+                    android:id="@+id/image_fork"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="0"
+                    android:layout_column="2"
+                    android:contentDescription="@string/fork_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_fork" />
+
+                <TextView
+                    android:id="@+id/text_fork"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="0"
+                    android:layout_column="3"
+                    android:padding="16dp"
+                    android:textIsSelectable="true" />
+
+                <ImageView
+                    android:id="@+id/image_watching"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    android:contentDescription="@string/watching_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_watching" />
+
+                <TextView
+                    android:id="@+id/text_watching"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="1"
+                    android:padding="16dp"
+                    android:textIsSelectable="true" />
+
+                <ImageView
+                    android:id="@+id/image_issues"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="1"
+                    android:layout_column="2"
+                    android:contentDescription="@string/code_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_code" />
+
+                <TextView
+                    android:id="@+id/text_issues"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_column="3"
+                    android:padding="16dp"
+                    android:textIsSelectable="true" />
+
+                <ImageView
+                    android:id="@+id/image_language"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="2"
+                    android:layout_column="0"
+                    android:contentDescription="@string/fork_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_code" />
+
+                <TextView
+                    android:id="@+id/text_language"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="2"
+                    android:layout_column="1"
+                    android:padding="16dp"
+                    android:textIsSelectable="true" />
+
+                <ImageView
+                    android:id="@+id/image_star"
+                    android:layout_width="@dimen/item_detail_dimen"
+                    android:layout_height="@dimen/item_detail_dimen"
+                    android:layout_row="2"
+                    android:layout_column="2"
+                    android:contentDescription="@string/fork_icon"
+                    android:padding="@dimen/image_padding"
+                    android:src="@drawable/iconfinder_star" />
+
+                <TextView
+                    android:id="@+id/text_star"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_row="2"
+                    android:layout_column="3"
+                    android:padding="16dp"
+                    android:textIsSelectable="true" />
+            </GridLayout>
+
+            <WebView
+                android:id="@+id/readme_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/repo_details_grid"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

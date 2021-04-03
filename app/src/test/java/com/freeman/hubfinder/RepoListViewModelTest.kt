@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.freeman.hubfinder.model.GithubRepo
 import com.freeman.hubfinder.model.Owner
 import com.freeman.hubfinder.model.RemoteRepository
-import com.freeman.hubfinder.model.SearchResults
+import com.freeman.hubfinder.model.RepoSearchResponse
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.core.Scheduler
@@ -39,7 +39,7 @@ class RepoListViewModelTest {
     private val owner = Owner("some_url")
     private val githubRepo = GithubRepo("hub_finder", owner)
     private val githubRepos = arrayListOf(githubRepo)
-    private val searchResults = SearchResults(githubRepos)
+    private val searchResults = RepoSearchResponse(githubRepos)
 
     @Before
     fun setup() {
@@ -70,7 +70,7 @@ class RepoListViewModelTest {
 
     @Test
     fun fetchRepos_onSuccess_should_set_loading_false() {
-        val testSingle: Single<SearchResults> = Single.just(searchResults)
+        val testSingle: Single<RepoSearchResponse> = Single.just(searchResults)
         val testString = "hub_finder"
 
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)
@@ -83,7 +83,7 @@ class RepoListViewModelTest {
 
     @Test
     fun fetchRepos_onSuccess_should_set_error_false() {
-        val testSingle: Single<SearchResults> = Single.just(searchResults)
+        val testSingle: Single<RepoSearchResponse> = Single.just(searchResults)
         val testString = "hub_finder"
 
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)
@@ -95,7 +95,7 @@ class RepoListViewModelTest {
 
     @Test
     fun fetchRepos_onSuccess_should_set_repoList() {
-        val testSingle: Single<SearchResults> = Single.just(searchResults)
+        val testSingle: Single<RepoSearchResponse> = Single.just(searchResults)
         val testString = "hub_finder"
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)
 
@@ -106,7 +106,7 @@ class RepoListViewModelTest {
 
     @Test
     fun fetchRepos_onError_should_set_isLoading_false() {
-        val testSingle: Single<SearchResults> = Single.error(Throwable())
+        val testSingle: Single<RepoSearchResponse> = Single.error(Throwable())
         val testString = "hub_finder"
 
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)
@@ -119,7 +119,7 @@ class RepoListViewModelTest {
 
     @Test
     fun fetchRepos_onError_should_set_repoListLoadError_true() {
-        val testSingle: Single<SearchResults> = Single.error(Throwable())
+        val testSingle: Single<RepoSearchResponse> = Single.error(Throwable())
         val testString = "hub_finder"
 
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)

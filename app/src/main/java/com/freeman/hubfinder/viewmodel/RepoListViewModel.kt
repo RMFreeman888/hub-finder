@@ -3,9 +3,10 @@ package com.freeman.hubfinder.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.freeman.hubfinder.model.Content
 import com.freeman.hubfinder.model.GithubRepo
 import com.freeman.hubfinder.model.RemoteRepository
-import com.freeman.hubfinder.model.SearchResults
+import com.freeman.hubfinder.model.RepoSearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -23,6 +24,8 @@ class RepoListViewModel @Inject constructor(
     val repoList = MutableLiveData<List<GithubRepo>>()
     val isLoading = MutableLiveData<Boolean>()
     val repoListLoadError = MutableLiveData<Boolean>()
+    val repoDetails = MutableLiveData<GithubRepo>()
+    val readme = MutableLiveData<String>()
 
     fun refresh() {
         if (lastSearched == null) {
@@ -38,8 +41,8 @@ class RepoListViewModel @Inject constructor(
         disposable.add(
                 remoteRepository.searchRepositories(search)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object: DisposableSingleObserver<SearchResults>(){
-                            override fun onSuccess(result: SearchResults?) {
+                        .subscribeWith(object: DisposableSingleObserver<RepoSearchResponse>(){
+                            override fun onSuccess(result: RepoSearchResponse?) {
                                 repoList.value = result?.items
                                 repoListLoadError.value = false
                                 isLoading.value = false
@@ -52,6 +55,32 @@ class RepoListViewModel @Inject constructor(
                         })
         )
     }
+
+    fun getRepositoryDetails(id: Long) {
+        val repoDetail = repoList.value?.find { it.id == id }
+        repoDetails.value = repoDetail
+            if (repoDetail == null) {
+                return
+            }
+            disposable.add(
+                    remoteRepository.getRepoContent(repoDetail.owner.login, repoDetail.name)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(object: DisposableSingleObserver<List<Content>>(){
+                                override fun onSuccess(result: List<Content>) {
+                                    val repoReadme = result.find { it.name.equals("readme.md", true)}
+                                    if(repoReadme !=null) {
+                                        readme.value = repoReadme.htmlUrl
+                                    }
+                                }
+
+                                override fun onError(e: Throwable?) {
+                                    // TODO handle errors
+                                }
+                            })
+            )
+
+    }
+
 
     override fun onCleared() {
         super.onCleared()
