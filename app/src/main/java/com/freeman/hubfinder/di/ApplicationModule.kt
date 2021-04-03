@@ -2,6 +2,7 @@ package com.freeman.hubfinder.di
 
 import com.freeman.hubfinder.model.GithubApi
 import com.freeman.hubfinder.model.RemoteRepository
+import com.freeman.hubfinder.view.adapter.RepoListAdapter
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import dagger.Module
 import dagger.Provides
@@ -44,4 +45,7 @@ class ApplicationModule() {
     fun provideRemoteRepository(githubApi: GithubApi): RemoteRepository {
         return RemoteRepository(githubApi)
     }
+
+    @Provides
+    fun provideRepoListAdapter() = RepoListAdapter(arrayListOf())
 }

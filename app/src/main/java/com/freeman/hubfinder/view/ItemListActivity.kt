@@ -15,6 +15,7 @@ import com.freeman.hubfinder.databinding.RepoListBinding
 import com.freeman.hubfinder.view.adapter.RepoListAdapter
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * An activity representing a list of Pings. This activity
@@ -31,7 +32,8 @@ class ItemListActivity : AppCompatActivity() {
     lateinit var activityBinding: ActivityItemListBinding
     lateinit var repoListBinding: RepoListBinding
 
-    private val repoListAdapter = RepoListAdapter(arrayListOf())
+    @Inject
+    lateinit var repoListAdapter: RepoListAdapter
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
