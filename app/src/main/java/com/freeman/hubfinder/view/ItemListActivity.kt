@@ -1,6 +1,7 @@
 package com.freeman.hubfinder.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
