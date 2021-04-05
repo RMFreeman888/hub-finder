@@ -69,11 +69,6 @@ class ItemListActivity : AppCompatActivity() {
             }
         })
 
-
-        val toolbar = activityBinding.toolbar
-        setSupportActionBar(toolbar)
-        toolbar.title = title
-
         viewModel = ViewModelProvider(this).get(RepoListViewModel::class.java)
 
         repoListBinding.itemList.setOnRefreshListener {

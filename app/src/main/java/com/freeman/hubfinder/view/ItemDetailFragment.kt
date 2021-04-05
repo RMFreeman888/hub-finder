@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import com.freeman.hubfinder.R
 import com.freeman.hubfinder.databinding.ItemDetailBinding
+import com.freeman.hubfinder.util.loadImage
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +61,8 @@ class ItemDetailFragment : Fragment() {
     fun observeViewModel() {
         viewModel.repoDetails.observe(viewLifecycleOwner, Observer { repoDetails ->
             repoDetails?.let{
-                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = repoDetails.name
+//                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = repoDetails.name
+                activity?.findViewById<ImageView>(R.id.backdrop)?.loadImage(repoDetails.owner.avatarUrl)
                 itemDetailBinding.textUser.setText(repoDetails.owner?.login)
                 itemDetailBinding.textFork.setText(repoDetails.forksCount.toString())
                 itemDetailBinding.textWatching.setText(repoDetails.watchersCount.toString())
