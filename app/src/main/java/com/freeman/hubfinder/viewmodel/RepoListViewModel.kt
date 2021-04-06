@@ -1,10 +1,8 @@
 package com.freeman.hubfinder.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freeman.hubfinder.model.*
-import com.freeman.hubfinder.util.getErrorStringId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable

@@ -32,7 +32,6 @@ class ItemDetailFragment : Fragment() {
     lateinit var viewModel: RepoListViewModel
 
     lateinit var itemDetailBinding: ItemDetailBinding
-//    lateinit var webView: WebView
     private var repoId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
