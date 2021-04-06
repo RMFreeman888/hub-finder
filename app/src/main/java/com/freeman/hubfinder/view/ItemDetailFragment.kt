@@ -50,11 +50,12 @@ class ItemDetailFragment : Fragment() {
         itemDetailBinding = ItemDetailBinding.inflate(layoutInflater, container, false)
         observeViewModel()
         viewModel.getRepositoryDetails(repoId)
-//        var myWebView: WebView = itemDetailBinding.root.findViewById(R.id.readme_web_view)
-//        myWebView.webViewClient = WebViewClient()
-//        myWebView.loadUrl("https://google.com")
-//        webView = itemDetailBinding.root.findViewById(R.id.readme_web_view)
-//        webView.webViewClient = WebViewClient()
+
+        itemDetailBinding.itemDetail.setOnRefreshListener {
+            itemDetailBinding.itemDetail.isRefreshing = false
+            viewModel.getRepositoryDetails(repoId)
+        }
+
         return itemDetailBinding.root
     }
 
@@ -63,7 +64,7 @@ class ItemDetailFragment : Fragment() {
             repoDetails?.let{
 //                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = repoDetails.name
                 activity?.findViewById<ImageView>(R.id.backdrop)?.loadImage(repoDetails.owner.avatarUrl)
-                itemDetailBinding.textUser.setText(repoDetails.owner?.login)
+                itemDetailBinding.textUser.setText(repoDetails.owner.login)
                 itemDetailBinding.textFork.setText(repoDetails.forksCount.toString())
                 itemDetailBinding.textWatching.setText(repoDetails.watchersCount.toString())
                 itemDetailBinding.textLanguage.setText(repoDetails.language)
@@ -74,11 +75,27 @@ class ItemDetailFragment : Fragment() {
 
         viewModel.readme.observe(viewLifecycleOwner, Observer { readme ->
             readme?.let{
-                Log.i("TESTDEBUG", readme)
+                itemDetailBinding.readmeWebView.visibility = View.VISIBLE
+                itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
                 itemDetailBinding.readmeWebView.loadUrl(readme)
                 //webView.loadUrl(readme)
             }
         })
+
+        viewModel.isLoadingReadme.observe(viewLifecycleOwner, Observer { isLoading ->
+            isLoading?.let{
+                if(isLoading) {
+                    itemDetailBinding.readmeWebView.loadUrl("about:blank")
+                    itemDetailBinding.readmeProgressSpinner.visibility = View.VISIBLE
+                } else {
+                    itemDetailBinding.readmeWebView.visibility = View.VISIBLE
+                    itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
+                }
+            }
+        })
+
+
+
     }
 
     companion object {

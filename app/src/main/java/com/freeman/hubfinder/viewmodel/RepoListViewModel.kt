@@ -1,6 +1,5 @@
 package com.freeman.hubfinder.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freeman.hubfinder.model.Content
@@ -26,6 +25,8 @@ class RepoListViewModel @Inject constructor(
     val repoListLoadError = MutableLiveData<Boolean>()
     val repoDetails = MutableLiveData<GithubRepo>()
     val readme = MutableLiveData<String>()
+    val isLoadingReadme = MutableLiveData<Boolean>()
+    val noReadmeAvailable = MutableLiveData<Boolean>()
 
     fun refresh() {
         if (lastSearched == null) {
@@ -58,23 +59,29 @@ class RepoListViewModel @Inject constructor(
 
     fun getRepositoryDetails(id: Long) {
         val repoDetail = repoList.value?.find { it.id == id }
+        isLoadingReadme.value = true
+        readme.value = "about:blank"
         repoDetails.value = repoDetail
             if (repoDetail == null) {
                 return
             }
+        isLoadingReadme.value = true
             disposable.add(
                     remoteRepository.getRepoContent(repoDetail.owner.login, repoDetail.name)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(object: DisposableSingleObserver<List<Content>>(){
                                 override fun onSuccess(result: List<Content>) {
-                                    val repoReadme = result.find { it.name.equals("readme.md", true)}
+                                    isLoadingReadme.value = false
+                                    val repoReadme = result.find { it.name.contains("readme", true)}
                                     if(repoReadme !=null) {
                                         readme.value = repoReadme.htmlUrl
+                                    } else {
+                                        noReadmeAvailable.value = true
                                     }
                                 }
 
                                 override fun onError(e: Throwable?) {
-                                    // TODO handle errors
+                                    isLoadingReadme.value = false
                                 }
                             })
             )
