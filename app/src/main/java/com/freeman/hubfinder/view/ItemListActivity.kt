@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.freeman.hubfinder.R
 import com.freeman.hubfinder.databinding.ActivityItemListBinding
 import com.freeman.hubfinder.databinding.RepoListBinding
+import com.freeman.hubfinder.util.getErrorStringId
 import com.freeman.hubfinder.view.adapter.RepoListAdapter
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,26 +56,10 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         repoListAdapter.setOnClickListeners(this, twoPane)
-
-        activityBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
-
-            override fun onQueryTextChange(qString: String): Boolean {
-                return true
-            }
-            override fun onQueryTextSubmit(qString: String): Boolean {
-                viewModel.fetchRepos(qString)
-                activityBinding.searchView.clearFocus()
-                return true
-            }
-        })
+        setSearchOnQueryListener()
+        setOnRefreshListener()
 
         viewModel = ViewModelProvider(this).get(RepoListViewModel::class.java)
-
-        repoListBinding.itemList.setOnRefreshListener {
-            repoListBinding.itemList.isRefreshing = false
-            viewModel.refresh()
-        }
 
         observeViewModel()
         viewModel.refresh()
@@ -102,14 +87,35 @@ class ItemListActivity : AppCompatActivity() {
 
         viewModel.repoListLoadError.observe(this, Observer { isLoadError ->
             isLoadError?.let {
-                if(it) {
                     repoListBinding.loadingView.visibility = View.GONE
                     repoListBinding.repoList.visibility = View.GONE
                     repoListBinding.listError.visibility = View.VISIBLE
-                } else {
-                    repoListBinding.listError.visibility = View.GONE
-                }
+                    repoListBinding.listError.setText(getErrorStringId(it))
+            } ?: run {
+                repoListBinding.listError.visibility = View.GONE
             }
         })
+    }
+
+    fun setSearchOnQueryListener() {
+        activityBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(qString: String): Boolean {
+                return true
+            }
+            override fun onQueryTextSubmit(qString: String): Boolean {
+                viewModel.fetchRepos(qString)
+                activityBinding.searchView.clearFocus()
+                return true
+            }
+        })
+    }
+
+    fun setOnRefreshListener() {
+        repoListBinding.itemList.setOnRefreshListener {
+            repoListBinding.itemList.isRefreshing = false
+            viewModel.refresh()
+        }
     }
 }

@@ -1,11 +1,10 @@
 package com.freeman.hubfinder.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.freeman.hubfinder.model.Content
-import com.freeman.hubfinder.model.GithubRepo
-import com.freeman.hubfinder.model.RemoteRepository
-import com.freeman.hubfinder.model.RepoSearchResponse
+import com.freeman.hubfinder.model.*
+import com.freeman.hubfinder.util.getErrorStringId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -22,11 +21,11 @@ class RepoListViewModel @Inject constructor(
 
     val repoList = MutableLiveData<List<GithubRepo>>()
     val isLoading = MutableLiveData<Boolean>()
-    val repoListLoadError = MutableLiveData<Boolean>()
+    val repoListLoadError = MutableLiveData<Throwable>()
     val repoDetails = MutableLiveData<GithubRepo>()
     val readme = MutableLiveData<String>()
     val isLoadingReadme = MutableLiveData<Boolean>()
-    val noReadmeAvailable = MutableLiveData<Boolean>()
+    val readmeLoadingError = MutableLiveData<Throwable>()
 
     fun refresh() {
         if (lastSearched == null) {
@@ -45,13 +44,13 @@ class RepoListViewModel @Inject constructor(
                         .subscribeWith(object: DisposableSingleObserver<RepoSearchResponse>(){
                             override fun onSuccess(result: RepoSearchResponse?) {
                                 repoList.value = result?.items
-                                repoListLoadError.value = false
+                                repoListLoadError.value = null
                                 isLoading.value = false
                             }
 
                             override fun onError(e: Throwable?) {
                                 isLoading.value = false
-                                repoListLoadError.value = true
+                                repoListLoadError.value = e
                             }
                         })
         )
@@ -76,12 +75,13 @@ class RepoListViewModel @Inject constructor(
                                     if(repoReadme !=null) {
                                         readme.value = repoReadme.htmlUrl
                                     } else {
-                                        noReadmeAvailable.value = true
+                                        // handle no readme
                                     }
                                 }
 
                                 override fun onError(e: Throwable?) {
                                     isLoadingReadme.value = false
+                                    readmeLoadingError.value = e
                                 }
                             })
             )

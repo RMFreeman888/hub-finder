@@ -12,6 +12,7 @@ import android.widget.ImageView
 import androidx.lifecycle.Observer
 import com.freeman.hubfinder.R
 import com.freeman.hubfinder.databinding.ItemDetailBinding
+import com.freeman.hubfinder.util.getErrorStringId
 import com.freeman.hubfinder.util.loadImage
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -46,7 +47,6 @@ class ItemDetailFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        Log.i("TESTDEBUG", "REACHED HERE")
         itemDetailBinding = ItemDetailBinding.inflate(layoutInflater, container, false)
         observeViewModel()
         viewModel.getRepositoryDetails(repoId)
@@ -91,6 +91,17 @@ class ItemDetailFragment : Fragment() {
                     itemDetailBinding.readmeWebView.visibility = View.VISIBLE
                     itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
                 }
+            }
+        })
+
+        viewModel.readmeLoadingError.observe(this, Observer { isLoadError ->
+            isLoadError?.let {
+                itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
+                itemDetailBinding.readmeWebView.visibility = View.GONE
+                itemDetailBinding.readmeLoadError.visibility = View.VISIBLE
+                itemDetailBinding.readmeLoadError.setText(getErrorStringId(it))
+            } ?: run {
+                itemDetailBinding.readmeLoadError.visibility = View.GONE
             }
         })
 

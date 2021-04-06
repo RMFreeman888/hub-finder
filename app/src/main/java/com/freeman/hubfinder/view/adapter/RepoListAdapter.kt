@@ -71,7 +71,7 @@ class RepoListAdapter(var githubRepos: ArrayList<GithubRepo>):
         fun bind(githubRepo: GithubRepo) {
             itemView.tag = githubRepo.id
             repoNameTextView.text = githubRepo.fullName
-            avatarImageView.loadImage(githubRepo.owner?.avatarUrl)
+            avatarImageView.loadImage(githubRepo.owner.avatarUrl)
         }
     }
 }

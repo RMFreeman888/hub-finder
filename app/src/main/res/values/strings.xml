@@ -5,4 +5,11 @@
     <string name="fork_icon">fork icon</string>
     <string name="code_icon">Code icon</string>
     <string name="watching_icon">Watching Icon</string>
+
+    <string name="error_exceeded_api_limit">
+        You have exceeded api limit. Please try again later
+    </string>
+    <string name="error_unable_to_resolve_host">
+        An error occurred please make sure you are connected to the internet
+    </string>
 </resources>
