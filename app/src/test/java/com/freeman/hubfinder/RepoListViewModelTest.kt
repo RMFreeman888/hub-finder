@@ -1,10 +1,7 @@
 package com.freeman.hubfinder
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.freeman.hubfinder.model.GithubRepo
-import com.freeman.hubfinder.model.Owner
-import com.freeman.hubfinder.model.RemoteRepository
-import com.freeman.hubfinder.model.RepoSearchResponse
+import com.freeman.hubfinder.model.*
 import com.freeman.hubfinder.viewmodel.RepoListViewModel
 import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
 import io.reactivex.rxjava3.core.Scheduler
@@ -36,10 +33,13 @@ class RepoListViewModelTest {
 
     lateinit var repoListViewModel: RepoListViewModel
 
-    private val owner = Owner("some_url")
-    private val githubRepo = GithubRepo("hub_finder", owner)
+    private val owner = Owner("some_name","some_url")
+    private val githubRepo = GithubRepo(1,"thanos/endgame","endgame", owner,
+        1, 1,"Kotlin", 1, 1)
     private val githubRepos = arrayListOf(githubRepo)
     private val searchResults = RepoSearchResponse(githubRepos)
+    private val content = Content("file_name", "html_url")
+    private val contentList = arrayListOf(content)
 
     @Before
     fun setup() {
@@ -82,7 +82,7 @@ class RepoListViewModelTest {
 
 
     @Test
-    fun fetchRepos_onSuccess_should_set_error_false() {
+    fun fetchRepos_onSuccess_should_set_error_null() {
         val testSingle: Single<RepoSearchResponse> = Single.just(searchResults)
         val testString = "hub_finder"
 
@@ -90,7 +90,7 @@ class RepoListViewModelTest {
 
         repoListViewModel.fetchRepos(testString)
 
-        Assert.assertEquals(false, repoListViewModel.repoListLoadError.value)
+        Assert.assertEquals(null, repoListViewModel.repoListLoadError.value)
     }
 
     @Test
@@ -118,15 +118,17 @@ class RepoListViewModelTest {
     }
 
     @Test
-    fun fetchRepos_onError_should_set_repoListLoadError_true() {
-        val testSingle: Single<RepoSearchResponse> = Single.error(Throwable())
+    fun fetchRepos_onError_should_set_repoListLoadError() {
+        val testThrowableMessage = "some_error"
+        val throwable: Throwable = Throwable(testThrowableMessage)
+
+        val testSingle: Single<RepoSearchResponse> = Single.error(throwable)
         val testString = "hub_finder"
 
         Mockito.`when`(remoteRepository.searchRepositories(testString)).thenReturn(testSingle)
 
         repoListViewModel.fetchRepos(testString)
 
-        Assert.assertEquals(true, repoListViewModel.repoListLoadError.value)
-
+        Assert.assertEquals(testThrowableMessage, repoListViewModel.repoListLoadError.value?.message)
     }
 }
