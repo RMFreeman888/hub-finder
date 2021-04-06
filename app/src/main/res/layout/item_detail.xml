@@ -93,9 +93,9 @@
                     android:layout_height="@dimen/item_detail_dimen"
                     android:layout_row="1"
                     android:layout_column="2"
-                    android:contentDescription="@string/code_icon"
+                    android:contentDescription="@string/issues_icon"
                     android:padding="@dimen/image_padding"
-                    android:src="@drawable/iconfinder_code" />
+                    android:src="@drawable/iconfinder_issues" />
 
                 <TextView
                     android:id="@+id/text_issues"

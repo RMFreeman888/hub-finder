@@ -12,4 +12,5 @@
     <string name="error_unable_to_resolve_host">
         An error occurred please make sure you are connected to the internet
     </string>
+    <string name="issues_icon">Issues icon</string>
 </resources>
