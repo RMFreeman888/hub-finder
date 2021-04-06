@@ -26,6 +26,7 @@ class RepoListViewModel @Inject constructor(
     val readme = MutableLiveData<String>()
     val isLoadingReadme = MutableLiveData<Boolean>()
     val readmeLoadingError = MutableLiveData<Throwable>()
+    val hasReadme = MutableLiveData<Boolean>()
 
     fun refresh() {
         if (lastSearched == null) {
@@ -73,9 +74,10 @@ class RepoListViewModel @Inject constructor(
                                     isLoadingReadme.value = false
                                     val repoReadme = result.find { it.name.contains("readme", true)}
                                     if(repoReadme !=null) {
+                                        hasReadme.value = true
                                         readme.value = repoReadme.htmlUrl
                                     } else {
-                                        // handle no readme
+                                        hasReadme.value = false
                                     }
                                 }
 

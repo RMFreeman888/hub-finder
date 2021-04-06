@@ -62,7 +62,6 @@ class ItemDetailFragment : Fragment() {
     fun observeViewModel() {
         viewModel.repoDetails.observe(viewLifecycleOwner, Observer { repoDetails ->
             repoDetails?.let{
-//                activity?.findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout)?.title = repoDetails.name
                 activity?.findViewById<ImageView>(R.id.backdrop)?.loadImage(repoDetails.owner.avatarUrl)
                 itemDetailBinding.textUser.setText(repoDetails.owner.login)
                 itemDetailBinding.textFork.setText(repoDetails.forksCount.toString())
@@ -76,19 +75,15 @@ class ItemDetailFragment : Fragment() {
         viewModel.readme.observe(viewLifecycleOwner, Observer { readme ->
             readme?.let{
                 itemDetailBinding.readmeWebView.visibility = View.VISIBLE
-                itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
                 itemDetailBinding.readmeWebView.loadUrl(readme)
-                //webView.loadUrl(readme)
             }
         })
 
         viewModel.isLoadingReadme.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let{
                 if(isLoading) {
-                    itemDetailBinding.readmeWebView.loadUrl("about:blank")
                     itemDetailBinding.readmeProgressSpinner.visibility = View.VISIBLE
                 } else {
-                    itemDetailBinding.readmeWebView.visibility = View.VISIBLE
                     itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
                 }
             }
@@ -96,7 +91,6 @@ class ItemDetailFragment : Fragment() {
 
         viewModel.readmeLoadingError.observe(this, Observer { isLoadError ->
             isLoadError?.let {
-                itemDetailBinding.readmeProgressSpinner.visibility = View.GONE
                 itemDetailBinding.readmeWebView.visibility = View.GONE
                 itemDetailBinding.readmeLoadError.visibility = View.VISIBLE
                 itemDetailBinding.readmeLoadError.setText(getErrorStringId(it))
@@ -105,7 +99,17 @@ class ItemDetailFragment : Fragment() {
             }
         })
 
-
+        viewModel.hasReadme.observe(this, Observer { hasReadme ->
+            hasReadme?.let {
+                if(!hasReadme) {
+                    itemDetailBinding.readmeLoadError.visibility = View.VISIBLE
+                    itemDetailBinding.readmeWebView.visibility = View.GONE
+                    itemDetailBinding.readmeLoadError.setText(R.string.error_no_readme)
+                } else {
+                    itemDetailBinding.readmeLoadError.visibility = View.GONE
+                }
+            }
+        })
 
     }
 
