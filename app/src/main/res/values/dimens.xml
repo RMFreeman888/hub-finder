@@ -7,4 +7,5 @@
     <dimen name="item_list_content_height">100dp</dimen>
     <dimen name="image_padding">8dp</dimen>
     <dimen name="item_detail_dimen">50dp</dimen>
+    <dimen name="two_pane_item_list_width">250dp</dimen>
 </resources>
