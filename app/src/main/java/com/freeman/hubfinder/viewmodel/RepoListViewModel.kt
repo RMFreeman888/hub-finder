@@ -15,6 +15,10 @@ class RepoListViewModel @Inject constructor(
     private val disposable: CompositeDisposable
 ): ViewModel() {
 
+    private var DEFAULT_SEARCH = "android"
+    private var BLANK_PAGE = "about:blank"
+    private var README_REGEX = "readme"
+
     private var lastSearched: String? = null
 
     val repoList = MutableLiveData<List<GithubRepo>>()
@@ -28,7 +32,7 @@ class RepoListViewModel @Inject constructor(
 
     fun refresh() {
         if (lastSearched == null) {
-            fetchRepos("android")
+            fetchRepos(DEFAULT_SEARCH)
         } else {
             fetchRepos(lastSearched!!)
         }
@@ -58,7 +62,7 @@ class RepoListViewModel @Inject constructor(
     fun getRepositoryDetails(id: Long) {
         val repoDetail = repoList.value?.find { it.id == id }
         isLoadingReadme.value = true
-        readme.value = "about:blank"
+        readme.value = BLANK_PAGE
         repoDetails.value = repoDetail
             if (repoDetail == null) {
                 return
@@ -70,7 +74,7 @@ class RepoListViewModel @Inject constructor(
                             .subscribeWith(object: DisposableSingleObserver<List<Content>>(){
                                 override fun onSuccess(result: List<Content>) {
                                     isLoadingReadme.value = false
-                                    val repoReadme = result.find { it.name.contains("readme", true)}
+                                    val repoReadme = result.find { it.name.contains(README_REGEX, true)}
                                     if(repoReadme !=null) {
                                         hasReadme.value = true
                                         readme.value = repoReadme.htmlUrl

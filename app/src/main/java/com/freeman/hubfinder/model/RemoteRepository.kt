@@ -6,10 +6,10 @@ import javax.inject.Inject
 class RemoteRepository @Inject constructor(
     private val githubApi: GithubApi
 ) {
-    private val perPage = "100"
+    private val PER_PAGE = "100"
 
     fun searchRepositories(search: String): Single<RepoSearchResponse> {
-        return githubApi.searchRepositories(search, perPage)
+        return githubApi.searchRepositories(search, PER_PAGE)
     }
 
     fun getRepoContent(owner: String, name: String): Single<List<Content>> {
